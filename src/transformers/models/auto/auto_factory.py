@@ -506,9 +506,12 @@ class _BaseAutoModelClass:
             if maybe_adapter_path is not None:
                 with open(maybe_adapter_path, "r", encoding="utf-8") as f:
                     adapter_config = json.load(f)
-
+                    # FIXME: did not check if the key was right, just a suggestion of what the fix might look like
+                    # (or not)
+                    adapter_kwargs["_adapter_hub_kwargs"] = copy(hub_kwargs)
                     adapter_kwargs["_adapter_model_path"] = pretrained_model_name_or_path
                     pretrained_model_name_or_path = adapter_config["base_model_name_or_path"]
+                    hub_kwargs.pop("revision", None)
 
         if not isinstance(config, PretrainedConfig):
             kwargs_orig = copy.deepcopy(kwargs)
